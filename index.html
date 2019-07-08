@@ -5,7 +5,7 @@
     <button class="operator" data-action="subtract">-</button>
     <button class="operator" data-action="multiply">x</button>
     <button class="operator" data-action="divide"  >÷</button>
-    <button class="number" >7</button>
+    <button class="number" ccesskey="7">7</button>
     <button class="number" >8</button>
     <button class="number" >9</button>
     <button class="number" >4</button>
@@ -17,14 +17,51 @@
     <button class="number" >0</button>
     <button class="decimal" data-action="decimal"  >.</button>
     <button class="clear"   data-action="clear"    >AC</button>
-    <button class="equal"   data-action="calculate">=</button>
+    <button class="equal"  ccesskey="enter" data-action="equal">=</button>
   </div>
 </div>
+
+<script>
+  buttonsDiv = document.querySelector('.buttons')
+  displayDiv = document.querySelector('.display')
+
+  buttonsDiv.addEventListener('click', clickEvent => {
+    displayValue = displayDiv.textContent
+    button = clickEvent.target
+
+    if (button.matches('button')){
+      dataAction = button.dataset.action
+      switch(dataAction){
+        case "add":
+        case "subtract":
+        case "multiply":
+        case "divide":
+          break;
+        case "decimal":
+          if( displayValue.includes(".")){
+          } else{
+              displayDiv.textContent = (displayValue + button.textContent)
+          }
+          break;
+        case "clear":
+          displayDiv.textContent = "0"
+          break;
+        case "equal":
+          break;
+        default:
+          if( displayValue === '0'){
+              displayDiv.textContent = button.textContent
+          } else{
+              displayDiv.textContent = (displayValue + button.textContent)
+          }
+      }
+    }
+  })
+</script>
 
 <style>
 .buttons {
   display: grid;
   grid-template-columns: auto auto auto;
 }
-
 </style>
