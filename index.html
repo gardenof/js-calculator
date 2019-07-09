@@ -5,7 +5,7 @@
     <button class="operator" data-action="subtract">-</button>
     <button class="operator" data-action="multiply">x</button>
     <button class="operator" data-action="divide"  >÷</button>
-    <button class="number" ccesskey="7">7</button>
+    <button class="number" >7</button>
     <button class="number" >8</button>
     <button class="number" >9</button>
     <button class="number" >4</button>
@@ -15,15 +15,19 @@
     <button class="number" >2</button>
     <button class="number" >3</button>
     <button class="number" >0</button>
-    <button class="decimal" data-action="decimal"  >.</button>
-    <button class="clear"   data-action="clear"    >AC</button>
-    <button class="equal"  ccesskey="enter" data-action="equal">=</button>
+    <button class="decimal" data-action="decimal">. </button>
+    <button class="clear"   data-action="clear"  >AC</button>
+    <button class="equal"   data-action="equal"  >= </button>
   </div>
 </div>
 
 <script>
   buttonsDiv = document.querySelector('.buttons')
   displayDiv = document.querySelector('.display')
+  numberOne  = ''
+  oppOne     = ''
+  numberTwo  = ''
+  totalMath  = ''
 
   buttonsDiv.addEventListener('click', clickEvent => {
     displayValue = displayDiv.textContent
@@ -36,6 +40,9 @@
         case "subtract":
         case "multiply":
         case "divide":
+          numberOne = displayValue
+          oppOne = dataAction
+          displayDiv.textContent = "0"
           break;
         case "decimal":
           if( displayValue.includes(".")){
@@ -47,18 +54,39 @@
           displayDiv.textContent = "0"
           break;
         case "equal":
+          if(oppOne){
+            numberTwo = displayValue
+            doMath(numberOne, oppOne, numberTwo)
+          }
           break;
         default:
-          if( displayValue === '0'){
+          if( displayValue === '0' ||
+              displayDiv.classList.value === 'display totalMath'){
               displayDiv.textContent = button.textContent
+              displayDiv.classList.remove("totalMath")
           } else{
               displayDiv.textContent = (displayValue + button.textContent)
           }
       }
     }
   })
-</script>
 
+function doMath(n1,o1,n2){
+  if(o1 === "add"){
+    totalMath = Number(n1) + Number(n2)
+    displayDiv.classList.add("totalMath")
+    clearAll()
+  }
+  displayDiv.textContent = totalMath
+}
+
+function clearAll(){
+  numberOne  = ''
+  oppOne     = ''
+  numberTwo  = ''
+}
+
+</script>
 <style>
 .buttons {
   display: grid;
