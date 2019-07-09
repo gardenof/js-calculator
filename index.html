@@ -29,7 +29,41 @@
   numberTwo  = ''
   totalMath  = ''
 
+  document.addEventListener("keydown", function(event) {
+    displayValue = displayDiv.textContent
+    if(event.which >=48 && event.which <=57){
+      //numbers 0-9
+      if( displayValue === '0' ||
+          displayDiv.classList.value === 'display totalMath'){
+          displayDiv.textContent = event.key
+          displayDiv.classList.remove("totalMath")
+      } else{
+          displayDiv.textContent = (displayValue + event.key)
+      }
+    }else if (event.which >=96 && event.which <=105){
+      //NumPad numbers 0-9
+    }else if (event.which == 13){
+      //return/enter
+      document.querySelector(".equal").focus()
+    }else if (event.which === 187){
+      if (event.key === "+"){
+          numberOne = displayValue
+          oppOne = "add"
+          displayDiv.textContent = "0"
+      }else if(event.key === "="){
+         if(oppOne){
+            numberTwo = displayValue
+            doMath(numberOne, oppOne, numberTwo)
+          }
+      }
+    }
+  })
+
   buttonsDiv.addEventListener('click', clickEvent => {
+    mainFunction(clickEvent)
+  })
+
+  function mainFunction(clickEvent){
     displayValue = displayDiv.textContent
     button = clickEvent.target
 
@@ -69,7 +103,7 @@
           }
       }
     }
-  })
+  }
 
 function doMath(n1,o1,n2){
   if(o1 === "add"){
