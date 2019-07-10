@@ -6,11 +6,11 @@
 - [x] Add calculate function that only handles addition
     - [x] Output results on the page when you click = or hit enter
     - [x] Make sure you can use mouse and keyboard items for submitting
-- [ ] Add subtraction
-- [ ] Add multiplication
-- [ ] Add division
+- [x] Add subtraction
+- [x] Add multiplication
+- [x] Add division
+- [ ] Refactor calculate function to apply order of operations
 - [ ] build for clear cases
     - [ ] 2 + clear
-- [ ] Refactor calculate function to apply order of operations
 - [ ] Style the buttons and layout
     - [ ] Highlight the operations button when click

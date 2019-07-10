@@ -15,13 +15,14 @@
     <button class="number" >2</button>
     <button class="number" >3</button>
     <button class="number" >0</button>
-    <button class="decimal" data-action="decimal">. </button>
+    <button class="decimal" data-action="decimal">.</button>
     <button class="clear"   data-action="clear"  >AC</button>
-    <button class="equal"   data-action="equal"  >= </button>
+    <button class="equal"   data-action="equal"  >=</button>
   </div>
 </div>
 
 <script>
+  document.querySelector(".display").focus()
   buttonsDiv = document.querySelector('.buttons')
   displayDiv = document.querySelector('.display')
   numberOne  = ''
@@ -31,31 +32,32 @@
 
   document.addEventListener("keydown", function(event) {
     displayValue = displayDiv.textContent
-    if(event.which >=48 && event.which <=57){
-      //numbers 0-9
-      if( displayValue === '0' ||
-          displayDiv.classList.value === 'display totalMath'){
-          displayDiv.textContent = event.key
-          displayDiv.classList.remove("totalMath")
-      } else{
-          displayDiv.textContent = (displayValue + event.key)
-      }
-    }else if (event.which >=96 && event.which <=105){
-      //NumPad numbers 0-9
+    if(event.key === "*"){
+      numberOne = displayValue
+      oppOne = "multiply"
+      displayDiv.textContent = "0"
+    }else if (event.key === "+"){
+      numberOne = displayValue
+      oppOne = "add"
+      displayDiv.textContent = "0"
+    }else if (event.key === "-"){
+      numberOne = displayValue
+      oppOne = "subtract"
+      displayDiv.textContent = "0"
+    }else if (event.key === "/"){
+      numberOne = displayValue
+      oppOne = "divide"
+      displayDiv.textContent = "0"
+    }else if (event.key === "."){
+      addDecimal()
+    }else if((event.which >=48 && event.which <=57) ||
+             (event.which >=96 && event.which <=105)){
+      updatingNumberDisplay(event.key)
     }else if (event.which == 13){
-      //return/enter
-      document.querySelector(".equal").focus()
+      document.querySelector(".display").focus()
+      equalTwoNumbers()
     }else if (event.which === 187){
-      if (event.key === "+"){
-          numberOne = displayValue
-          oppOne = "add"
-          displayDiv.textContent = "0"
-      }else if(event.key === "="){
-         if(oppOne){
-            numberTwo = displayValue
-            doMath(numberOne, oppOne, numberTwo)
-          }
-      }
+      equalTwoNumbers()
     }
   })
 
@@ -79,46 +81,73 @@
           displayDiv.textContent = "0"
           break;
         case "decimal":
-          if( displayValue.includes(".")){
-          } else{
-              displayDiv.textContent = (displayValue + button.textContent)
-          }
+          addDecimal()
           break;
         case "clear":
           displayDiv.textContent = "0"
           break;
         case "equal":
-          if(oppOne){
-            numberTwo = displayValue
-            doMath(numberOne, oppOne, numberTwo)
-          }
+            equalTwoNumbers()
           break;
         default:
-          if( displayValue === '0' ||
-              displayDiv.classList.value === 'display totalMath'){
-              displayDiv.textContent = button.textContent
-              displayDiv.classList.remove("totalMath")
-          } else{
-              displayDiv.textContent = (displayValue + button.textContent)
-          }
+          updatingNumberDisplay(button.textContent)
       }
     }
   }
 
-function doMath(n1,o1,n2){
-  if(o1 === "add"){
-    totalMath = Number(n1) + Number(n2)
+
+  function updatingNumberDisplay(newNumber){
+    if( displayValue === '0' ||
+          displayDiv.classList.value === 'display totalMath'){
+          displayDiv.textContent = newNumber
+          displayDiv.classList.remove("totalMath")
+    } else{
+          displayDiv.textContent = (displayValue + newNumber)
+    }
+  }
+
+  function equalTwoNumbers(){
+    if(oppOne){
+      numberTwo = displayValue
+      doMath(numberOne, oppOne, numberTwo)
+    }
+  }
+
+  function addDecimal(){
+    if(displayDiv.classList.value === 'display totalMath' ){
+      displayDiv.textContent = "0."
+      displayDiv.classList.remove("totalMath")
+    }else if(!displayValue.includes(".")){
+      displayDiv.textContent = (displayValue + ".")
+    }
+  }
+
+  function doMath(n1,o1,n2){
+    switch(o1){
+        case "add":
+            totalMath = Number(n1) + Number(n2)
+        break;
+        case "subtract":
+            totalMath = Number(n1) - Number(n2)
+        break;
+        case "multiply":
+            totalMath = Number(n1) * Number(n2)
+        break;
+        case "divide":
+            totalMath = Number(n1) / Number(n2)
+        break;
+    }
+
     displayDiv.classList.add("totalMath")
     clearAll()
+    displayDiv.textContent = totalMath
   }
-  displayDiv.textContent = totalMath
-}
 
-function clearAll(){
-  numberOne  = ''
-  oppOne     = ''
-  numberTwo  = ''
-}
+  function clearAll(){
+    numberOne  = ''
+    oppOne     = ''
+    numberTwo  = ''
+  }
 
 </script>
 <style>
