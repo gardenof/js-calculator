@@ -9,7 +9,7 @@
 - [x] Add subtraction
 - [x] Add multiplication
 - [x] Add division
-- [ ] Refactor calculate function to apply order of operations
+- [x] Refactor calculate function to apply order of operations
 - [ ] build for clear cases
     - [ ] 2 + clear
 - [ ] Style the buttons and layout

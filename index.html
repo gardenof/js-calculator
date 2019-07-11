@@ -1,10 +1,10 @@
 <div class="calculator">
   <div class="display">0</div>
   <div class="buttons">
-    <button class="operator" data-action="add"     >+</button>
-    <button class="operator" data-action="subtract">-</button>
-    <button class="operator" data-action="multiply">x</button>
-    <button class="operator" data-action="divide"  >÷</button>
+    <button class="operator" data-action="+">+</button>
+    <button class="operator" data-action="-">-</button>
+    <button class="operator" data-action="*">x</button>
+    <button class="operator" data-action="/">÷</button>
     <button class="number" >7</button>
     <button class="number" >8</button>
     <button class="number" >9</button>
@@ -16,48 +16,43 @@
     <button class="number" >3</button>
     <button class="number" >0</button>
     <button class="decimal" data-action="decimal">.</button>
-    <button class="clear"   data-action="clear"  >AC</button>
-    <button class="equal"   data-action="equal"  >=</button>
+    <button class="clear"   data-action="clear">AC</button>
+    <button class="equal"   data-action="=">=</button>
   </div>
 </div>
 
 <script>
-  document.querySelector(".display").focus()
-  buttonsDiv = document.querySelector('.buttons')
-  displayDiv = document.querySelector('.display')
-  numberOne  = ''
-  oppOne     = ''
-  numberTwo  = ''
-  totalMath  = ''
+  buttonsDiv  = document.querySelector('.buttons')
+  displayDiv  = document.querySelector('.display')
+  numberOne   = ''
+  oppOne      = ''
+  numberTwo   = ''
+  oppTwo      = ''
+  numberThree = ''
+  oppThree    = ''
+  totalMath   = ''
 
   document.addEventListener("keydown", function(event) {
     displayValue = displayDiv.textContent
-    if(event.key === "*"){
-      numberOne = displayValue
-      oppOne = "multiply"
+    testDataBABY = event
+    if(event.key === "*" || event.key === "+"||
+       event.key === "-" || event.key === "/"){
       displayDiv.textContent = "0"
-    }else if (event.key === "+"){
-      numberOne = displayValue
-      oppOne = "add"
-      displayDiv.textContent = "0"
-    }else if (event.key === "-"){
-      numberOne = displayValue
-      oppOne = "subtract"
-      displayDiv.textContent = "0"
-    }else if (event.key === "/"){
-      numberOne = displayValue
-      oppOne = "divide"
-      displayDiv.textContent = "0"
+      saveInput(displayValue, event.key)
     }else if (event.key === "."){
       addDecimal()
-    }else if((event.which >=48 && event.which <=57) ||
+    }else if((!event.shiftKey) &&
+             (event.which >=48 && event.which <=57) ||
              (event.which >=96 && event.which <=105)){
       updatingNumberDisplay(event.key)
     }else if (event.which == 13){
-      document.querySelector(".display").focus()
-      equalTwoNumbers()
+        //THIS IS THE ENTER/RETURN KEY
+    }else if (event.which === 46 || event.which === 8||
+              event.which === 27 ){
+      allClear()
     }else if (event.which === 187){
-      equalTwoNumbers()
+      displayDiv.textContent = "0"
+      saveInput(displayValue, event.key)
     }
   })
 
@@ -72,22 +67,19 @@
     if (button.matches('button')){
       dataAction = button.dataset.action
       switch(dataAction){
-        case "add":
-        case "subtract":
-        case "multiply":
-        case "divide":
-          numberOne = displayValue
-          oppOne = dataAction
+        case "+":
+        case "-":
+        case "*":
+        case "/":
+        case "=":
           displayDiv.textContent = "0"
+          saveInput(displayValue, dataAction)
           break;
         case "decimal":
           addDecimal()
           break;
         case "clear":
-          displayDiv.textContent = "0"
-          break;
-        case "equal":
-            equalTwoNumbers()
+          allClear()
           break;
         default:
           updatingNumberDisplay(button.textContent)
@@ -106,13 +98,6 @@
     }
   }
 
-  function equalTwoNumbers(){
-    if(oppOne){
-      numberTwo = displayValue
-      doMath(numberOne, oppOne, numberTwo)
-    }
-  }
-
   function addDecimal(){
     if(displayDiv.classList.value === 'display totalMath' ){
       displayDiv.textContent = "0."
@@ -122,33 +107,126 @@
     }
   }
 
-  function doMath(n1,o1,n2){
-    switch(o1){
-        case "add":
-            totalMath = Number(n1) + Number(n2)
-        break;
-        case "subtract":
-            totalMath = Number(n1) - Number(n2)
-        break;
-        case "multiply":
-            totalMath = Number(n1) * Number(n2)
-        break;
-        case "divide":
-            totalMath = Number(n1) / Number(n2)
-        break;
-    }
-
-    displayDiv.classList.add("totalMath")
-    clearAll()
-    displayDiv.textContent = totalMath
+  function allClear(){
+    numberOne   = ''
+    oppOne      = ''
+    numberTwo   = ''
+    oppTwo      = ''
+    numberThree = ''
+    oppThree    = ''
+    displayDiv.textContent = "0"
   }
 
-  function clearAll(){
+  function saveInput(num,opp){
+    if(!oppOne){
+      numberOne = num
+      oppOne = opp
+    }else if (!oppTwo){
+      numberTwo = num
+      oppTwo = opp
+    }else if (!oppThree){
+      numberThree = num
+      oppThree = opp
+    }
+    doMathOrderOpps()
+  }
+
+  function equalsClear(){
     numberOne  = ''
     oppOne     = ''
     numberTwo  = ''
+    oppTwo     = ''
+    numberThree= ''
+    oppThree   = ''
   }
 
+  function doMathOrderOpps(){
+    op1type = oppGroup(oppOne)
+    op2type = oppGroup(oppTwo)
+    op3type = oppGroup(oppThree)
+    if ( oppOne === '' || oppTwo === ''){
+    } else if (op1type === op2type ||
+              (op1type === "A" && op2type === "B") ||
+               op2type === "c"){
+      newNumberdoMath = twoNumberMath(numberOne, oppOne, numberTwo)
+      numberOne = newNumberdoMath
+      oppOne    = oppTwo
+      numberTwo = ''
+      oppTwo = ''
+    } else if (op2type === op3type){
+      newNumberdoMath = twoNumberMath(numberTwo, oppTwo, numberThree)
+      numberTwo = newNumberdoMath
+      oppTwo    = oppThree
+      numberThree = ''
+      oppThree = ''
+    } else if ((op2type === "A" && op3type === "B") ||
+               op3type === "c"){
+      newNumberdoMath = twoNumberMath(numberTwo, oppTwo, numberThree)
+      newNumberdoMath2 = twoNumberMath(numberOne, oppOne, newNumberdoMath)
+      numberOne = newNumberdoMath2
+      oppOne    = oppThree
+      numberTwo = ''
+      oppTwo = ''
+      numberThree =''
+      oppThree = ''
+    }
+
+    if (op2type === "c" || op3type === "c"){
+      displayDiv.textContent = numberOne
+      equalsClear()
+      displayDiv.classList.add("totalMath")
+    }
+  }
+
+
+function twoNumberMath(n1, o1, n2){
+  twoNumberMathTotal =''
+  switch(o1){
+      case "+":
+          twoNumberMathTotal = Number(n1) + Number(n2)
+      break;
+      case "-":
+          twoNumberMathTotal = Number(n1) - Number(n2)
+      break;
+      case "*":
+          twoNumberMathTotal = Number(n1) * Number(n2)
+      break;
+      case "/":
+          twoNumberMathTotal = Number(n1) / Number(n2)
+      break;
+  }
+  return twoNumberMathTotal
+}
+
+  function oppGroup(opp){
+    switch(opp){
+        case "=":
+          return "c"
+        break;
+        case "+":
+        case "-":
+          return "B"
+        break;
+        case "*":
+        case "/":
+          return "A"
+        break;
+    }
+  }
+
+  function pa(textMessage){
+    if(textMessage){
+      console.log(textMessage)
+    }
+  console.log("numberOne   = " + numberOne)
+  console.log("oppOne      = " + oppOne)
+  console.log("numberTwo   = " + numberTwo)
+  console.log("oppTwo      = " + oppTwo)
+  console.log("numberThree = " + numberThree)
+  console.log("oppThree    = " + oppThree)
+  console.log("totalMath   = " + totalMath)
+  console.log("display     = " + displayDiv.textContent)
+  }
 </script>
 <style>
 .buttons {
