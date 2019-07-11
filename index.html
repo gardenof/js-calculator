@@ -107,13 +107,17 @@
   }
 
   function allClear(){
-    numberOne   = ''
-    oppOne      = ''
-    numberTwo   = ''
-    oppTwo      = ''
-    numberThree = ''
-    oppThree    = ''
+    equalsClear()
     displayDiv.textContent = "0"
+  }
+
+  function equalsClear(){
+    numberOne  = ''
+    oppOne     = ''
+    numberTwo  = ''
+    oppTwo     = ''
+    numberThree= ''
+    oppThree   = ''
   }
 
   function saveInput(num,opp){
@@ -131,15 +135,6 @@
     }
     displayDiv.textContent = "0"
     doMathOrderOpps()
-  }
-
-  function equalsClear(){
-    numberOne  = ''
-    oppOne     = ''
-    numberTwo  = ''
-    oppTwo     = ''
-    numberThree= ''
-    oppThree   = ''
   }
 
   function doMathOrderOpps(){
@@ -174,29 +169,31 @@
     }
 
     if (op2type === "c" || op3type === "c"){
-      displayDiv.textContent = numberOne
+      if (numberOne.toString().length > 10){
+        displayDiv.textContent = "Error"
+      }else{
+        displayDiv.textContent = numberOne
+      }
       equalsClear()
       displayDiv.classList.add("totalMath")
     }
   }
 
   function twoNumberMath(n1, o1, n2){
-    twoNumberMathTotal =''
     switch(o1){
         case "+":
-            twoNumberMathTotal = Number(n1) + Number(n2)
+            return Number(n1) + Number(n2)
         break;
         case "-":
-            twoNumberMathTotal = Number(n1) - Number(n2)
+            return Number(n1) - Number(n2)
         break;
         case "*":
-            twoNumberMathTotal = Number(n1) * Number(n2)
+            return Number(n1) * Number(n2)
         break;
         case "/":
-            twoNumberMathTotal = Number(n1) / Number(n2)
+            return Number(n1) / Number(n2)
         break;
     }
-    return twoNumberMathTotal
   }
 
   function oppGroup(opp){
@@ -219,14 +216,15 @@
     if(textMessage){
       console.log(textMessage)
     }
-  console.log("numberOne   = " + numberOne)
-  console.log("oppOne      = " + oppOne)
-  console.log("numberTwo   = " + numberTwo)
-  console.log("oppTwo      = " + oppTwo)
-  console.log("numberThree = " + numberThree)
-  console.log("oppThree    = " + oppThree)
-  console.log("totalMath   = " + totalMath)
-  console.log("display     = " + displayDiv.textContent)
+    console.log("numberOne   = " + numberOne)
+    console.log("numberOne   = " + numberOne.length)
+    console.log("oppOne      = " + oppOne)
+    console.log("numberTwo   = " + numberTwo)
+    console.log("oppTwo      = " + oppTwo)
+    console.log("numberThree = " + numberThree)
+    console.log("oppThree    = " + oppThree)
+    console.log("totalMath   = " + totalMath)
+    console.log("display     = " + displayDiv.textContent)
   }
 </script>
 <style>
