@@ -32,35 +32,36 @@
   oppThree    = ''
   totalMath   = ''
 
-  document.addEventListener("keydown", function(event) {
-    displayValue = displayDiv.textContent
-    testDataBABY = event
-    if(event.key === "*" || event.key === "+"||
-       event.key === "-" || event.key === "/"){
-      displayDiv.textContent = "0"
-      saveInput(displayValue, event.key)
-    }else if (event.key === "."){
-      addDecimal()
-    }else if((!event.shiftKey) &&
-             (event.which >=48 && event.which <=57) ||
-             (event.which >=96 && event.which <=105)){
-      updatingNumberDisplay(event.key)
-    }else if (event.which == 13){
-        //THIS IS THE ENTER/RETURN KEY
-    }else if (event.which === 46 || event.which === 8||
-              event.which === 27 ){
-      allClear()
-    }else if (event.which === 187){
-      displayDiv.textContent = "0"
-      saveInput(displayValue, event.key)
-    }
+  document.addEventListener("keydown", keyEvent => {
+    keyEventActions(keyEvent)
   })
 
   buttonsDiv.addEventListener('click', clickEvent => {
-    mainFunction(clickEvent)
+    clickEventActions(clickEvent)
   })
 
-  function mainFunction(clickEvent){
+  function keyEventActions(keyEvent) {
+    displayValue = displayDiv.textContent
+    if(keyEvent.key === "*" || keyEvent.key === "+"||
+       keyEvent.key === "-" || keyEvent.key === "/"){
+      saveInput(displayValue, keyEvent.key)
+    }else if (keyEvent.key === "."){
+      addDecimal()
+    }else if((!keyEvent.shiftKey) &&
+             (keyEvent.which >=48 && keyEvent.which <=57) ||
+             (keyEvent.which >=96 && keyEvent.which <=105)){
+      updatingNumberDisplay(keyEvent.key)
+    }else if (keyEvent.which == 13){
+        //THIS IS THE ENTER/RETURN KEY
+    }else if (keyEvent.which === 46 || keyEvent.which === 8||
+              keyEvent.which === 27 ){
+      allClear()
+    }else if (keyEvent.which === 187){
+      saveInput(displayValue, keyEvent.key)
+    }
+  }
+
+  function clickEventActions(clickEvent){
     displayValue = displayDiv.textContent
     button = clickEvent.target
 
@@ -72,7 +73,6 @@
         case "*":
         case "/":
         case "=":
-          displayDiv.textContent = "0"
           saveInput(displayValue, dataAction)
           break;
         case "decimal":
@@ -86,7 +86,6 @@
       }
     }
   }
-
 
   function updatingNumberDisplay(newNumber){
     if( displayValue === '0' ||
@@ -118,7 +117,9 @@
   }
 
   function saveInput(num,opp){
-    if(!oppOne){
+    if(!numberOne && opp === "=" ) {
+      return
+    }else if(!oppOne){
       numberOne = num
       oppOne = opp
     }else if (!oppTwo){
@@ -128,6 +129,7 @@
       numberThree = num
       oppThree = opp
     }
+    displayDiv.textContent = "0"
     doMathOrderOpps()
   }
 
@@ -178,25 +180,24 @@
     }
   }
 
-
-function twoNumberMath(n1, o1, n2){
-  twoNumberMathTotal =''
-  switch(o1){
-      case "+":
-          twoNumberMathTotal = Number(n1) + Number(n2)
-      break;
-      case "-":
-          twoNumberMathTotal = Number(n1) - Number(n2)
-      break;
-      case "*":
-          twoNumberMathTotal = Number(n1) * Number(n2)
-      break;
-      case "/":
-          twoNumberMathTotal = Number(n1) / Number(n2)
-      break;
+  function twoNumberMath(n1, o1, n2){
+    twoNumberMathTotal =''
+    switch(o1){
+        case "+":
+            twoNumberMathTotal = Number(n1) + Number(n2)
+        break;
+        case "-":
+            twoNumberMathTotal = Number(n1) - Number(n2)
+        break;
+        case "*":
+            twoNumberMathTotal = Number(n1) * Number(n2)
+        break;
+        case "/":
+            twoNumberMathTotal = Number(n1) / Number(n2)
+        break;
+    }
+    return twoNumberMathTotal
   }
-  return twoNumberMathTotal
-}
 
   function oppGroup(opp){
     switch(opp){

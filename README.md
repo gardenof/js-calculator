@@ -10,7 +10,8 @@
 - [x] Add multiplication
 - [x] Add division
 - [x] Refactor calculate function to apply order of operations
-- [ ] build for clear cases
-    - [ ] 2 + clear
+- [ ] build for clear to clear all only
 - [ ] Style the buttons and layout
     - [ ] Highlight the operations button when click
+    - [ ] if more then 10 digits display Error
+    - [ ] display number at current time in Display
