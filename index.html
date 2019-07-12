@@ -133,7 +133,7 @@
       numberThree = num
       oppThree = opp
     }
-    displayDiv.textContent = "0"
+    displayDiv.classList.add("totalMath")
     doMathOrderOpps()
   }
 
@@ -150,12 +150,14 @@
       oppOne    = oppTwo
       numberTwo = ''
       oppTwo = ''
+      displayDiv.textContent = numberOne
     } else if (op2type === op3type){
       newNumberdoMath = twoNumberMath(numberTwo, oppTwo, numberThree)
       numberTwo = newNumberdoMath
       oppTwo    = oppThree
       numberThree = ''
       oppThree = ''
+      displayDiv.textContent = numberTwo
     } else if ((op2type === "A" && op3type === "B") ||
                op3type === "c"){
       newNumberdoMath = twoNumberMath(numberTwo, oppTwo, numberThree)
@@ -217,7 +219,6 @@
       console.log(textMessage)
     }
     console.log("numberOne   = " + numberOne)
-    console.log("numberOne   = " + numberOne.length)
     console.log("oppOne      = " + oppOne)
     console.log("numberTwo   = " + numberTwo)
     console.log("oppTwo      = " + oppTwo)

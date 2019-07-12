@@ -12,6 +12,5 @@
 - [x] Refactor calculate function to apply order of operations
 - [x] build for clear to clear all only
 - [x] if more then 10 digits display Error
-- [ ] display number at current time in Display
-- [ ] Style the buttons and layout
-    - [ ] Highlight the operations button when click
+- [x] display number at current time in Display
+- [x] Style the buttons and layout
