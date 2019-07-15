@@ -35,20 +35,13 @@
   const ADD_SUBTRACT    = "ADD_SUBTRACT"
   const EQUAL           = "EQUAL"
 
-  buttonsDiv   = document.querySelector('.buttons')
   displayDiv   = document.querySelector('.display')
-  numberOne   = ''
-  oppOne      = ''
-  numberTwo   = ''
-  oppTwo      = ''
-  numberThree = ''
-  oppThree    = ''
-  totalMath   = ''
-
-  function getDisplayValue(){
-    dis = document.querySelector('.display')
-    return dis.textContent
-  }
+  numberOne    = ''
+  oppOne       = ''
+  numberTwo    = ''
+  oppTwo       = ''
+  numberThree  = ''
+  oppThree     = ''
 
   numberButtons   = document.querySelectorAll('.number')
   operatorButtons = document.querySelectorAll('.operator')
@@ -104,20 +97,25 @@
     }
   }
 
+  function getDisplayValue(){
+    dis = document.querySelector('.display')
+    return dis.textContent
+  }
+
   function updatingNumberDisplay(newNumber){
     if( getDisplayValue() === '0' ||
-          displayDiv.classList.value === 'display totalMath'){
+          displayDiv.classList.value === 'display holdNumber'){
           displayDiv.textContent = newNumber
-          displayDiv.classList.remove("totalMath")
+          displayDiv.classList.remove("holdNumber")
     } else{
           displayDiv.textContent = (getDisplayValue() + newNumber)
     }
   }
 
   function addDecimal(){
-    if(displayDiv.classList.value === 'display totalMath' ){
+    if(displayDiv.classList.value === 'display holdNumber' ){
       displayDiv.textContent = "0."
-      displayDiv.classList.remove("totalMath")
+      displayDiv.classList.remove("holdNumber")
     }else if(!getDisplayValue().includes(".")){
       displayDiv.textContent = (getDisplayValue() + ".")
     }
@@ -125,7 +123,7 @@
 
   function allClear(){
     equalsClear()
-    displayDiv.classList.remove("totalMath")
+    displayDiv.classList.remove("holdNumber")
     displayDiv.textContent = "0"
   }
 
@@ -151,7 +149,7 @@
       numberThree = num
       oppThree = opp
     }
-    displayDiv.classList.add("totalMath")
+    displayDiv.classList.add("holdNumber")
     doMathOrderOpps()
   }
 
@@ -195,7 +193,7 @@
         displayDiv.textContent = numberOne
       }
       equalsClear()
-      displayDiv.classList.add("totalMath")
+      displayDiv.classList.add("holdNumber")
     }
   }
 
@@ -242,7 +240,6 @@
     console.log("oppTwo      = " + oppTwo)
     console.log("numberThree = " + numberThree)
     console.log("oppThree    = " + oppThree)
-    console.log("totalMath   = " + totalMath)
     console.log("display     = " + displayDiv.textContent)
   }
 </script>
