@@ -31,6 +31,9 @@
   const KEY_NUMPAD0     = 96
   const KEY_NUMPAD9     = 105
   const KEY_EQUAL       = 187
+  const MULTIPLY_DIVIDE = "MULTIPLY_DIVIDE"
+  const ADD_SUBTRACT    = "ADD_SUBTRACT"
+  const EQUAL           = "EQUAL"
 
   buttonsDiv   = document.querySelector('.buttons')
   displayDiv   = document.querySelector('.display')
@@ -158,8 +161,8 @@
     op3type = oppGroup(oppThree)
     if ( oppOne === '' || oppTwo === ''){
     } else if (op1type === op2type ||
-              (op1type === "A" && op2type === "B") ||
-               op2type === "c"){
+              (op1type === MULTIPLY_DIVIDE && op2type === ADD_SUBTRACT) ||
+               op2type === EQUAL){
       newNumberdoMath = twoNumberMath(numberOne, oppOne, numberTwo)
       numberOne = newNumberdoMath
       oppOne    = oppTwo
@@ -173,8 +176,8 @@
       numberThree = ''
       oppThree = ''
       displayDiv.textContent = numberTwo
-    } else if ((op2type === "A" && op3type === "B") ||
-               op3type === "c"){
+    } else if ((op2type === MULTIPLY_DIVIDE && op3type === ADD_SUBTRACT) ||
+               op3type === EQUAL){
       newNumberdoMath = twoNumberMath(numberTwo, oppTwo, numberThree)
       newNumberdoMath2 = twoNumberMath(numberOne, oppOne, newNumberdoMath)
       numberOne = newNumberdoMath2
@@ -185,7 +188,7 @@
       oppThree = ''
     }
 
-    if (op2type === "c" || op3type === "c"){
+    if (op2type === EQUAL || op3type === EQUAL){
       if (numberOne.toString().length > 10){
         displayDiv.textContent = "Error"
       }else{
@@ -216,15 +219,15 @@
   function oppGroup(opp){
     switch(opp){
         case "=":
-          return "c"
+          return EQUAL
         break;
         case "+":
         case "-":
-          return "B"
+          return ADD_SUBTRACT
         break;
         case "*":
         case "/":
-          return "A"
+          return MULTIPLY_DIVIDE
         break;
     }
   }
