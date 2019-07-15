@@ -22,8 +22,18 @@
 </div>
 
 <script>
-  buttonsDiv  = document.querySelector('.buttons')
-  displayDiv  = document.querySelector('.display')
+  const KEY_BACK_SPACE  = 8
+  const KEY_RETURN      = 13
+  const KEY_ESCAPE      = 27
+  const KEY_DELETE      = 46
+  const KEY_0           = 48
+  const KEY_9           = 57
+  const KEY_NUMPAD0     = 96
+  const KEY_NUMPAD9     = 105
+  const KEY_EQUAL       = 187
+
+  buttonsDiv   = document.querySelector('.buttons')
+  displayDiv   = document.querySelector('.display')
   numberOne   = ''
   oppOne      = ''
   numberTwo   = ''
@@ -32,68 +42,72 @@
   oppThree    = ''
   totalMath   = ''
 
+  function getDisplayValue(){
+    dis = document.querySelector('.display')
+    return dis.textContent
+  }
+
+  numberButtons   = document.querySelectorAll('.number')
+  operatorButtons = document.querySelectorAll('.operator')
+  equalsButton    = document.querySelector('.equal')
+  decimalButton   = document.querySelector('.decimal')
+  clearButton     = document.querySelector('.clear')
+
+  numberButtons.forEach( button => {
+    button.addEventListener('click', clickEvent =>{
+      updatingNumberDisplay(button.textContent)
+     })
+  })
+
+  operatorButtons.forEach( oppbutton => {
+    oppbutton.addEventListener('click', clickEvent =>{
+      saveInput(getDisplayValue() , clickEvent.target.dataset.action)
+      })
+  })
+
+  equalsButton.addEventListener('click', clickEvent =>{
+    saveInput(getDisplayValue() , clickEvent.target.dataset.action)
+  })
+
+  decimalButton.addEventListener('click', clickEvent =>{
+    addDecimal()
+  })
+
+  clearButton.addEventListener('click', clickEvent => {
+    allClear()
+  })
+
   document.addEventListener("keydown", keyEvent => {
     keyEventActions(keyEvent)
   })
 
-  buttonsDiv.addEventListener('click', clickEvent => {
-    clickEventActions(clickEvent)
-  })
-
   function keyEventActions(keyEvent) {
-    displayValue = displayDiv.textContent
     if(keyEvent.key === "*" || keyEvent.key === "+"||
        keyEvent.key === "-" || keyEvent.key === "/"){
-      saveInput(displayValue, keyEvent.key)
+      saveInput(getDisplayValue(), keyEvent.key)
     }else if (keyEvent.key === "."){
       addDecimal()
     }else if((!keyEvent.shiftKey) &&
-             (keyEvent.which >=48 && keyEvent.which <=57) ||
-             (keyEvent.which >=96 && keyEvent.which <=105)){
+             (keyEvent.which >= KEY_0 && keyEvent.which <= KEY_9 ) ||
+             (keyEvent.which >= KEY_NUMPAD0 && keyEvent.which <= KEY_NUMPAD9 )){
       updatingNumberDisplay(keyEvent.key)
-    }else if (keyEvent.which == 13){
-        //THIS IS THE ENTER/RETURN KEY
-    }else if (keyEvent.which === 46 || keyEvent.which === 8||
-              keyEvent.which === 27 ){
+    }else if (keyEvent.which == KEY_RETURN){
+    }else if (keyEvent.which === KEY_DELETE ||
+              keyEvent.which === KEY_BACK_SPACE ||
+              keyEvent.which === KEY_ESCAPE ){
       allClear()
-    }else if (keyEvent.which === 187){
-      saveInput(displayValue, keyEvent.key)
-    }
-  }
-
-  function clickEventActions(clickEvent){
-    displayValue = displayDiv.textContent
-    button = clickEvent.target
-
-    if (button.matches('button')){
-      dataAction = button.dataset.action
-      switch(dataAction){
-        case "+":
-        case "-":
-        case "*":
-        case "/":
-        case "=":
-          saveInput(displayValue, dataAction)
-          break;
-        case "decimal":
-          addDecimal()
-          break;
-        case "clear":
-          allClear()
-          break;
-        default:
-          updatingNumberDisplay(button.textContent)
-      }
+    }else if (keyEvent.which === KEY_EQUAL){
+      saveInput(getDisplayValue(), keyEvent.key)
     }
   }
 
   function updatingNumberDisplay(newNumber){
-    if( displayValue === '0' ||
+    if( getDisplayValue() === '0' ||
           displayDiv.classList.value === 'display totalMath'){
           displayDiv.textContent = newNumber
           displayDiv.classList.remove("totalMath")
     } else{
-          displayDiv.textContent = (displayValue + newNumber)
+          displayDiv.textContent = (getDisplayValue() + newNumber)
     }
   }
 
@@ -101,13 +115,14 @@
     if(displayDiv.classList.value === 'display totalMath' ){
       displayDiv.textContent = "0."
       displayDiv.classList.remove("totalMath")
-    }else if(!displayValue.includes(".")){
-      displayDiv.textContent = (displayValue + ".")
+    }else if(!getDisplayValue().includes(".")){
+      displayDiv.textContent = (getDisplayValue() + ".")
     }
   }
 
   function allClear(){
     equalsClear()
+    displayDiv.classList.remove("totalMath")
     displayDiv.textContent = "0"
   }
 
